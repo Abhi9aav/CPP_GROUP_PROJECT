@@ -8,9 +8,9 @@ using namespace std;
 template <typename T>
 class CustomException 
 {
- private:
+private:
    T message;
- public:
+public:
    CustomException(const T& msg) 
    {
       message = msg;
