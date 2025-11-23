@@ -54,12 +54,6 @@ bool FacultyModule::removeFacultyById(int id)
     return false;
 }
 
-Faculty* FacultyModule::findFacultyById(int id)
-{
-    (void)id; 
-    return nullptr;
-}
-
 void FacultyModule::saveFacultyToFile(const string& filename) 
 {
     ofstream ofs(filename.c_str());
