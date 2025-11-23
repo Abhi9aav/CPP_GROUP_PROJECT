@@ -28,7 +28,6 @@ class StudentModule : public AbstractModule
  public:
     void addStudent();
     bool removeStudentById(int id);
-    Student* findStudentById(int id); // returns pointer or nullptr
     void saveStudentsToFile(const string& filename);
     void loadStudentsFromFile(const string& filename);
     void displayModuleInfo() override;

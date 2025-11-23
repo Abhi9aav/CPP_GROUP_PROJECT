@@ -55,14 +55,7 @@ bool StudentModule::removeStudentById(int id)
     return false;
 }
 
-Student* StudentModule::findStudentById(int id) 
-{
-    for (auto& s : const_cast<vector<Student>&>(students.all())) 
-    {
-        if (s.id == id) return &s;
-    }
-    return nullptr;
-}
+
 
 void StudentModule::saveStudentsToFile(const string& filename)
  {
