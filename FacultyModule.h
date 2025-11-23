@@ -28,7 +28,6 @@ class FacultyModule : public AbstractModule
  public:
     void addFaculty();
     bool removeFacultyById(int id);
-    Faculty* findFacultyById(int id);
     void saveFacultyToFile(const string& filename);
     void loadFacultyFromFile(const string& filename);
     void displayModuleInfo() override;
