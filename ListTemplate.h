@@ -42,7 +42,7 @@ class ListTemplate
     
     void show() const 
     {
-        for (const auto& it : m_items) 
+        for (const auto& it : m_items) //range based loop
         {
             cout << it << endl;
         }
