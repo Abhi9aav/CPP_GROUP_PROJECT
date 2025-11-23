@@ -18,7 +18,7 @@ public:
 
    T what() const 
    { 
-      return m_message; 
+      return message; 
    }
 };
 
