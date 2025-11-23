@@ -14,9 +14,11 @@ class DatabaseModule : public AbstractModule
  public:
     void connect();              
     void disconnect();
-    bool isConnected() const { return m_connected; }
-
-  
+    bool isConnected() const 
+    {
+       return m_connected; 
+    }
+    
     void displayModuleInfo() override;
 };
 

@@ -8,7 +8,8 @@ void FacultyModule::addFaculty()
 {
     cout << "Enter faculty id (int): ";
     int id;
-    if (!(cin >> id)) {
+    if (!(cin >> id)) 
+    {
         cin.clear();
         string junk; getline(cin, junk);
         cout << "Invalid id input.\n";
