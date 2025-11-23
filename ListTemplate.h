@@ -6,7 +6,7 @@
 using namespace std;
 
 // Generic simple list 
-template <typename T>
+template <typename T>  // so we can make students or faculty
 class ListTemplate 
 {
  private:
