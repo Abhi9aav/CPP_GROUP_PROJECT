@@ -9,9 +9,12 @@ template <typename T>
 class CustomException 
 {
  private:
-    T m_message;
+    T message;
  public:
-    CustomException(const T& msg) : m_message(msg) {}
+    CustomException(const T& msg) 
+    {
+      message = msg;
+    } 
     T what() const { return m_message; }
 };
 
