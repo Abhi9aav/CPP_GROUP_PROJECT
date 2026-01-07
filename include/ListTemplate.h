@@ -1,53 +1,41 @@
-#ifndef LISTTEMPLATE_H
-#define LISTTEMPLATE_H
+#pragma once
 
 #include <vector>
-#include <iostream>
-using namespace std;
+#include <cstddef>
 
 // Generic simple list 
 template <typename T>  // so we can make students or faculty
 class ListTemplate 
 {
- private:
-    vector<T> m_items;
  public:
 
     void add(const T& item) 
     {
-        m_items.push_back(item);
+        items_.push_back(item);
     }
 
-    bool removeAt(size_t index) 
+    bool removeAt(std::size_t index) 
     {
-        if (index >= m_items.size()) 
+        if (index >= items_.size()) 
         {
             return false;
         }
 
-        m_items.erase(m_items.begin() + index);
+        items_.erase(items_.begin() + index);
         return true;
     }
 
-    size_t size() const 
+    std::size_t size() const 
     { 
-        return m_items.size(); 
+        return items_.size(); 
     }
 
-    const vector<T>& all() const 
+    const std::vector<T>& all() const 
     { 
-        return m_items;
+        return items_;
     }
 
-    
-    void show() const 
-    {
-        for (const auto& it : m_items) //range based loop
-        {
-            cout << it << endl;
-        }
-    }
+private:
+    std::vector<T> items_;    
 };
-
-#endif
 
