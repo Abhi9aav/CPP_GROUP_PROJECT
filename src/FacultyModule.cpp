@@ -109,7 +109,11 @@ void FacultyModule::displayModuleInfo()
         return;
     }
 
-    faculty_.show();
+    for (const auto& faculty : faculty_.all())
+    {
+    std::cout << faculty << '\n';
+    }
+
 }
 
 std::ostream& operator<<(std::ostream& os, const Faculty& faculty)
@@ -117,3 +121,4 @@ std::ostream& operator<<(std::ostream& os, const Faculty& faculty)
     os << faculty.id << " : " << faculty.name;
     return os;
 }
+

@@ -108,7 +108,11 @@ void StudentModule::displayModuleInfo()
         return;
     }
 
-    students_.show();
+    for (const auto& student : students_.all())
+    {
+    std::cout << student << '\n';
+    }
+
 }
 
 std::ostream& operator<<(std::ostream& os, const Student& student)
