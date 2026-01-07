@@ -5,15 +5,15 @@ template <typename T>
 class CustomException 
 {
 public:
-   CustomException(const T& msg) 
+  explicit CustomException(const T& msg) : message_(msg)
    {
-      message = msg;
    } 
 
-   T what() const 
+   const T& what() const 
    { 
-      return message; 
+      return message_; 
    }
+   
 private:
    T message_;
 };
