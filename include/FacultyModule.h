@@ -1,37 +1,33 @@
-#ifndef FACULTYMODULE_H
-#define FACULTYMODULE_H
+#pragma once
 
 #include "AbstractModule.h"
 #include "ListTemplate.h"
 #include <string>
-#include <fstream>
-using namespace std;
+#include <ostream>
 
 // Simple Faculty data type
 struct Faculty 
 {
-    int id;
-    string name;
+    int id{};
+    std::string name;
 };
 
-inline ostream& operator<<(ostream& os, const Faculty& f) 
-{
-    os << f.id << " : " << f.name;
-    return os;
-}
+std::ostream& operator<<(std::ostream& os, const Faculty& f);
 
 class FacultyModule : public AbstractModule 
 {
- protected:
-    ListTemplate<Faculty> facultyList;
-
  public:
     void addFaculty();
     bool removeFacultyById(int id);
-    void saveFacultyToFile(const string& filename);
-    void loadFacultyFromFile(const string& filename);
+
+    void saveToFile(const std::string& filename) const;
+    void loadFromFile(const std::string& filename);
+
     void displayModuleInfo() override;
+
+ private:
+    ListTemplate<Faculty> faculty_;
 };
 
-#endif
+
 

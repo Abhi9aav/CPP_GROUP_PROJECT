@@ -1,37 +1,35 @@
-#ifndef STUDENTMODULE_H
-#define STUDENTMODULE_H
+#pragma once
 
 #include "AbstractModule.h"
 #include "ListTemplate.h"
 #include <string>
-#include <fstream>
-using namespace std;
+#include <ostream>
+
 
 // Simple Student data type
 struct Student 
 {
-    int id;
-    string name;
+    int id{};
+    std::string name;
 };
 
 // allow printing Student 
-inline ostream& operator<<(ostream& os, const Student& s) 
-{
-    os << s.id << " : " << s.name;
-    return os;
-}
+std::ostream& operator<<(std::ostream& os, const Student& s);
 
 class StudentModule : public AbstractModule 
 {
- protected:
-    ListTemplate<Student> students;
  public:
     void addStudent();
     bool removeStudentById(int id);
-    void saveStudentsToFile(const string& filename);
-    void loadStudentsFromFile(const string& filename);
+
+    void saveToFile(const std::string& filename) const;
+    void loadFromFile(const std::string& filename);
+
     void displayModuleInfo() override;
+
+ private:
+    ListTemplate<Student> students_;
 };
 
-#endif
+
 

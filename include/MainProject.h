@@ -1,24 +1,25 @@
-#ifndef MAINPROJECT_H
-#define MAINPROJECT_H
+#pragma once
 
 #include "StudentModule.h"
 #include "FacultyModule.h"
 #include "DatabaseModule.h"
-using namespace std;
+
 
 // MainProject inherits the three modules.
 
-class MainProject : public StudentModule, public FacultyModule, public DatabaseModule
+class MainProject
 {
 public:
     
-    void displayModuleInfo() override;
-
-    // main
-    void run();
-
-   
+    void displayModuleInfo();
+    void run();  // main
     void saveAll();
+
+private:
+    StudentModule studentModule_;
+    FacultyModule facultyModule_;
+    DatabaseModule databaseModule_;
+
 };
 
-#endif
+

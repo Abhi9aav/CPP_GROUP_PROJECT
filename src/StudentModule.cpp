@@ -1,113 +1,118 @@
 #include "StudentModule.h"
+
 #include <iostream>
 #include <fstream>
 #include <limits>
-using namespace std;
 
-void StudentModule::addStudent() 
+void StudentModule::addStudent()
 {
-    cout << "Enter student id (int): ";
-    int id;
+    std::cout << "Enter student id (int): ";
+    int id{};
 
-    if (!(cin >> id)) 
+    if (!(std::cin >> id))
     {
-        cin.clear();
-        string junk; getline(cin, junk);
-        cout << "Invalid id input.\n";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid id input.\n";
         return;
     }
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    cout << "Enter student name: ";
-    string name;
-    getline(cin, name);
+    std::cout << "Enter student name: ";
+    std::string name;
+    std::getline(std::cin, name);
 
     // avoid duplicates
-    for (const auto& s : students.all()) 
+    for (const auto& student : students_.all())
     {
-        if (s.id == id) 
+        if (student.id == id)
         {
-            cout << "Student with id " << id << " already exists.\n";
+            std::cout << "Student with id " << id << " already exists.\n";
             return;
         }
     }
 
-    Student s;
-    s.id = id;
-    s.name = name;
-
-    students.add(s);
-    cout << "Student added: " << s << "\n";
+    students_.add(Student{id, name});
+    std::cout << "Student added: " << Student{id, name} << '\n';
 }
 
-bool StudentModule::removeStudentById(int id) 
+bool StudentModule::removeStudentById(int id)
 {
-    const auto& all = students.all();
-    for (size_t i = 0; i < all.size(); i++) 
+    const auto& allStudents = students_.all();
+
+    for (std::size_t i = 0; i < allStudents.size(); ++i)
     {
-        if (all[i].id == id) 
+        if (allStudents[i].id == id)
         {
-            students.removeAt(i);
+            students_.removeAt(i);
             return true;
         }
     }
     return false;
 }
 
-
-
-void StudentModule::saveStudentsToFile(const string& filename)
- {
-    ofstream ofs(filename.c_str());
-    if (!ofs) {
-        cout << "ERROR: cannot open student file.\n";
+void StudentModule::saveToFile(const std::string& filename) const
+{
+    std::ofstream outFile(filename);
+    if (!outFile)
+    {
+        std::cout << "ERROR: cannot open student file.\n";
         return;
     }
 
-    for (const auto& s : students.all()) 
+    for (const auto& student : students_.all())
     {
-        ofs << s.id << "," << s.name << "\n";
+        outFile << student.id << ',' << student.name << '\n';
     }
-    ofs.close();
 
-    cout << "Students saved to " << filename << "\n";
+    std::cout << "Students saved to " << filename << '\n';
 }
 
-void StudentModule::loadStudentsFromFile(const string& filename) 
+void StudentModule::loadFromFile(const std::string& filename)
 {
-    ifstream ifs(filename.c_str());
-    if (!ifs) return;
-
-    string line;
-    while (getline(ifs, line)) 
+    std::ifstream inFile(filename);
+    if (!inFile)
     {
-        if (line.empty()) continue;
+        return;
+    }
 
-        size_t comma = line.find(',');
-        if (comma != string::npos) 
+    std::string line;
+    while (std::getline(inFile, line))
+    {
+        if (line.empty())
         {
-            int id = stoi(line.substr(0, comma));
-            string name = line.substr(comma + 1);
-
-            Student s{ id, name };
-            students.add(s);
+            continue;
         }
-    }
 
-    ifs.close();
+        const auto commaPos = line.find(',');
+        if (commaPos == std::string::npos)
+        {
+            continue;
+        }
+
+        const int id = std::stoi(line.substr(0, commaPos));
+        const std::string name = line.substr(commaPos + 1);
+
+        students_.add(Student{id, name});
+    }
 }
 
-void StudentModule::displayModuleInfo() 
+void StudentModule::displayModuleInfo()
 {
-    cout << "--- Student Module ---\n";
+    std::cout << "--- Student Module ---\n";
 
-    if (students.size() == 0) 
+    if (students_.size() == 0)
     {
-        cout << "(no students)\n";
+        std::cout << "(no students)\n";
         return;
     }
 
-    students.show();
+    students_.show();
 }
 
+std::ostream& operator<<(std::ostream& os, const Student& student)
+{
+    os << student.id << " : " << student.name;
+    return os;
+}

@@ -1,116 +1,119 @@
 #include "FacultyModule.h"
+
+
 #include <iostream>
 #include <fstream>
 #include <limits>
-using namespace std;
 
 void FacultyModule::addFaculty() 
 {
-    cout << "Enter faculty id (int): ";
-    int id;
-    if (!(cin >> id)) 
+    std::cout << "Enter faculty id (int): ";
+    int id{};
+
+    if (!(std::cin >> id)) 
     {
-        cin.clear();
-        string junk; getline(cin, junk);
-        cout << "Invalid id input.\n";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid id input.\n";
         return;
     }
 
     
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    cout << "Enter faculty name: ";
-    string name;
-    getline(cin, name);
+    std::cout << "Enter faculty name: ";
+    std::string name;
+    std::getline(std::cin, name);
 
     // avoid duplicates
-    for (const auto& f : facultyList.all()) 
+    for (const auto& faculty : faculty_.all()) 
     {
-        if (f.id == id) {
-            cout << "Faculty with id " << id << " already exists. Skipping.\n";
+        if (faculty.id == id) 
+        {
+            std::cout << "Faculty with id " << id << " already exists. Skipping.\n";
             return;
         }
     }
 
-    Faculty f; 
-    f.id = id; 
-    f.name = name;
-    facultyList.add(f);
-
-    cout << "Faculty added: " << f << "\n";
+    faculty_.add(Faculty{id, name});
+    std::cout << "Faculty added: " << Faculty{id, name} << "\n";
 }
 
 bool FacultyModule::removeFacultyById(int id) 
 {
-    const auto& all = facultyList.all();
-    for (size_t i = 0; i < all.size(); ++i) 
+    const auto& allFaculty = faculty_.all();
+
+    for (std::size_t i = 0; i < allFaculty.size(); ++i) 
     {
-        if (all[i].id == id) 
+        if (allFaculty[i].id == id) 
         {
-            facultyList.removeAt(i);
+            faculty_.removeAt(i);
             return true;
         }
     }
     return false;
 }
 
-void FacultyModule::saveFacultyToFile(const string& filename) 
+void FacultyModule::saveToFile(const std::string& filename) const 
 {
-    ofstream ofs(filename.c_str());
-    if (!ofs) {
-        cout << "Failed to open faculty file for writing: " << filename << "\n";
+    std::ofstream outFile(filename);
+    if (!outFile) 
+    {
+        std::cout << "Failed to open faculty file for writing: " << filename << "\n";
         return;
     }
 
-    for (const auto& f : facultyList.all()) 
+    for (const auto& faculty : faculty_.all()) 
     {
-        ofs << f.id << "," << f.name << "\n";
+        outFile << faculty.id << "," << faculty.name << "\n";
     }
 
-    ofs.close();
-    cout << "Faculty saved to " << filename << "\n";
+    std::cout << "Faculty saved to " << filename << "\n";
 }
 
-void FacultyModule::loadFacultyFromFile(const string& filename) 
+void FacultyModule::loadFromFile(const std::string& filename) 
 {
-    ifstream ifs(filename.c_str());
-    if (!ifs) 
+    std::ifstream inFile(filename);
+    if (!inFile) 
     {
         return;
     }
     
-    string line;
-    while (getline(ifs, line)) 
+    std::string line;
+    while (std::getline(inFile, line)) 
     {
         if (line.empty()) 
         {
             continue;
         }
 
-        size_t comma = line.find(',');
+        const auto commaPos = line.find(',');
 
-        if (comma != string::npos) 
+        if (commaPos == std::string::npos) 
         {
-            int id = stoi(line.substr(0, comma));
-            string name = line.substr(comma + 1);
-
-            Faculty f{ id, name };
-            facultyList.add(f);
+            continue;
         }
+        const int id = std::stoi(line.substr(0, commaPos));
+        const std::string name = line.substr(commaPos + 1);
+        faculty_.add(Faculty{id, name});
     }
-
-    ifs.close();
 }
 
 void FacultyModule::displayModuleInfo() 
 {
-    cout << "--- Faculty Module ---\n";
+    std::cout << "--- Faculty Module ---\n";
 
-    if (facultyList.size() == 0) 
+    if (faculty_.size() == 0) 
     {
-        cout << "(no faculty)\n";
+        std::cout << "(no faculty)\n";
         return;
     }
 
-    facultyList.show();
+    faculty_.show();
+}
+
+std::ostream& operator<<(std::ostream& os, const Faculty& faculty)
+{
+    os << faculty.id << " : " << faculty.name;
+    return os;
 }

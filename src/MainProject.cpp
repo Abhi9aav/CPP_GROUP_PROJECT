@@ -1,114 +1,140 @@
 #include "MainProject.h"
+
 #include <iostream>
 #include <limits>
-using namespace std;
+
 
 void MainProject::displayModuleInfo() 
 {
-    cout << "\n===== FULL STUDENT MANAGEMENT SYSTEM REPORT =====\n\n";
-    cout << "(1) STUDENT MODULE:\n";
-    StudentModule::displayModuleInfo();
-    cout << "\n(2) FACULTY MODULE:\n";
-    FacultyModule::displayModuleInfo();
-    cout << "\n(3) DATABASE MODULE:\n";
-    DatabaseModule::displayModuleInfo();
+    std::cout << "\n===== FULL STUDENT MANAGEMENT SYSTEM REPORT =====\n\n";
+
+    std::cout << "(1) STUDENT MODULE:\n";
+    studentModule_.displayModuleInfo();
+
+    std::cout << "\n(2) FACULTY MODULE:\n";
+    facultyModule_.displayModuleInfo();
+
+    std::cout << "\n(3) DATABASE MODULE:\n";
+    databaseModule_.displayModuleInfo();
 }
 
 void MainProject::saveAll() 
 {
-    saveStudentsToFile("students.txt");
-    saveFacultyToFile("faculty.txt");
+    studentModule_.saveToFile("students.txt");
+    facultyModule_.saveToFile("faculty.txt");
 }
 
 void MainProject::run() 
 {
-    loadStudentsFromFile("students.txt");
-    loadFacultyFromFile("faculty.txt");
+    studentModule_.loadFromFile("students.txt");
+    facultyModule_.loadFromFile("faculty.txt");
 
     bool running = true;
     while (running) {
-        cout << "\n===== STUDENT MANAGEMENT SYSTEM MENU =====\n";
-        cout << "1. Add Student\n";
-        cout << "2. Add Faculty\n";
-        cout << "3. Show Students\n";
-        cout << "4. Show Faculty\n";
-        cout << "5. Remove Student by ID\n";
-        cout << "6. Remove Faculty by ID\n";
-        cout << "7. Connect to Database (simulate)\n";
-        cout << "8. Save to files\n";
-        cout << "9. Show Full Report\n";
-        cout << "0. Exit\n";
-        cout << "Choose option: ";
+        std::cout << "\n===== STUDENT MANAGEMENT SYSTEM MENU =====\n";
+        std::cout << "1. Add Student\n";
+        std::cout << "2. Add Faculty\n";
+        std::cout << "3. Show Students\n";
+        std::cout << "4. Show Faculty\n";
+        std::cout << "5. Remove Student by ID\n";
+        std::cout << "6. Remove Faculty by ID\n";
+        std::cout << "7. Connect to Database (simulate)\n";
+        std::cout << "8. Save to files\n";
+        std::cout << "9. Show Full Report\n";
+        std::cout << "0. Exit\n";
+        std::cout << "Choose option: ";
 
-        int choice;
-        if (!(cin >> choice)) 
+        int choice{};
+        if (!(std::cin >> choice)) 
         {
-            cin.clear();
-            string junk;
-            getline(cin, junk);
-            cout << "Invalid input. Try again.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Invalid input. Try again.\n";
             continue;
         }
 
         switch (choice) 
         {
             case 1:
-                StudentModule::addStudent();
+                studentModule_.addStudent();
                 break;
+
             case 2:
-                FacultyModule::addFaculty();
+                facultyModule_.addFaculty();
                 break;
+
             case 3:
-                StudentModule::displayModuleInfo();
+                studentModule_.displayModuleInfo();
                 break;
+
             case 4:
-                FacultyModule::displayModuleInfo();
+                facultyModule_.displayModuleInfo();
                 break;
+
             case 5: 
             {
-                cout << "Enter student id to remove: ";
-                int id; cin >> id;
-                if (StudentModule::removeStudentById(id))
-                    cout << "Student removed.\n";
+                std::cout << "Enter student id to remove: ";
+                int id{};
+                std::cin >> id;
+
+                if (studentModule_.removeStudentById(id))
+                {
+                    std::cout << "Student removed.\n";
+                }
                 else
-                    cout << "Student id not found.\n";
+                {
+                    std::cout << "Student id not found.\n";
+                }
                 break;
             }
+
             case 6: 
             {
-                cout << "Enter faculty id to remove: ";
-                int id; cin >> id;
-                if (FacultyModule::removeFacultyById(id))
-                    cout << "Faculty removed.\n";
+                std::cout << "Enter faculty id to remove: ";
+                int id{};
+                std::cin >> id;
+
+                if (facultyModule_.removeFacultyById(id))
+                {
+                    std::cout << "Faculty removed.\n";
+                }
                 else
-                    cout << "Faculty id not found.\n";
+                {
+                    std::cout << "Faculty id not found.\n";
+                }
                 break;
             }
+
             case 7:
                 try 
                 {
-                    DatabaseModule::connect();
-                } catch (const CustomException<string>& ex) 
+                    databaseModule_.connect();
+                } 
+                catch (const CustomException<std::string>& ex) 
                 {
-                    cout << "[CUSTOM EXCEPTION] " << ex.what() << "\n";
+                    std::cout << "[CUSTOM EXCEPTION] " << ex.what() << "\n";
                 }
                 break;
+
             case 8:
                 saveAll();
                 break;
+
             case 9:
                 displayModuleInfo();
                 break;
+
             case 0:
-                cout << "Saving before exit...\n";
+                std::cout << "Saving before exit...\n";
                 saveAll();
                 running = false;
                 break;
+
             default:
-                cout << "Unknown option.\n";
+               std::cout << "Unknown option.\n";
         }
     }
 
-    disconnect();
-    cout << "Goodbye.\n";
+    databaseModule_.disconnect();
+    std::cout << "Goodbye.\n";
 }
