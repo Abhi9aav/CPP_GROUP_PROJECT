@@ -52,6 +52,33 @@ bool StudentModule::removeStudentById(int id)
     return false;
 }
 
+const Student* StudentModule::findbyID(int id) const
+{
+    for (const auto& student : students_.all())
+    {
+        if(student.id == id)
+        {
+            return &student;
+        }
+    }
+    return nullptr;
+}
+
+std::vector<Student> StudentModule::findbyName(const std::string& name) const
+{
+    std::vector<Student> results;
+
+    for (const auto& student: students_.all())
+    {
+        if (student.name.find(name) != std::string::npos)
+        {
+            results.push_back(student);
+        }
+    }
+    return results;
+}
+
+
 void StudentModule::saveToFile(const std::string& filename) const
 {
     std::ofstream outFile(filename);
@@ -110,7 +137,7 @@ void StudentModule::displayModuleInfo()
 
     for (const auto& student : students_.all())
     {
-    std::cout << student << '\n';
+    std::cout << student << '\n'; 
     }
 
 }

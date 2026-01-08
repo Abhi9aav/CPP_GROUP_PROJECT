@@ -22,6 +22,9 @@ class StudentModule : public AbstractModule
     void addStudent();
     bool removeStudentById(int id);
 
+    const Student* findbyID(int id) const;
+    std::vector<Student> findbyName(const std::string& name) const;
+
     void saveToFile(const std::string& filename) const;
     void loadFromFile(const std::string& filename);
 
