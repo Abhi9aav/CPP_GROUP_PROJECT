@@ -54,6 +54,32 @@ bool FacultyModule::removeFacultyById(int id)
     return false;
 }
 
+const Faculty* FacultyModule::findFacultyById(int id) const
+{
+    for(const auto& faculty : faculty_.all())
+    {
+        if(faculty.id == id)
+        {
+            return &faculty;
+        }
+    }
+    return nullptr;
+}
+
+std::vector<Faculty> FacultyModule::findFacultyByName(const std::string& keyword) const
+{
+    std::vector<Faculty> results;
+
+    for(const auto& faculty : faculty_.all())
+    {
+        if(faculty.name.find(keyword) != std::string::npos)
+        {
+            results.push_back(faculty);
+        }
+    }
+    return results;
+}
+
 void FacultyModule::saveToFile(const std::string& filename) const 
 {
     std::ofstream outFile(filename);

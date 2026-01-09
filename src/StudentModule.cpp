@@ -64,7 +64,7 @@ const Student* StudentModule::findbyID(int id) const
     return nullptr;
 }
 
-std::vector<Student> StudentModule::findbyName(const std::string& name) const
+std::vector<Student> StudentModule::findStudentbyName(const std::string& name) const
 {
     std::vector<Student> results;
 

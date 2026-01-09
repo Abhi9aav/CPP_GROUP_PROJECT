@@ -41,6 +41,8 @@ void MainProject::run()
         std::cout << "7. Connect to Database (simulate)\n";
         std::cout << "8. Save to files\n";
         std::cout << "9. Show Full Report\n";
+        std::cout << "10. Search Student\n";
+        std::cout << "11. Search Faculty\n";
         std::cout << "0. Exit\n";
         std::cout << "Choose option: ";
 
@@ -123,6 +125,50 @@ void MainProject::run()
             case 9:
                 displayModuleInfo();
                 break;
+
+            case 10:
+            {
+                std::cout << "Search Student by name: ";
+                std::string keyword;
+                std::cin >> keyword;
+
+                auto results = studentModule_.findStudentbyName(keyword);
+
+                if (results.empty())
+                {
+                    std::cout << "no students found.\n";
+                }
+                else
+                {
+                    for(const auto& s : results)
+                    {
+                        std::cout << s << "\n";
+                    }
+                }
+                break;
+            }
+
+            case 11:
+            {
+                std::cout << "Search Faculty by name: ";
+                std::string keyword;
+                std::cin >> keyword;
+
+                auto results = facultyModule_.findFacultyByName(keyword);
+
+                if (results.empty())
+                {
+                    std::cout << "no faculty found.\n";
+                }
+                else
+                {
+                    for(const auto& f : results)
+                    {
+                        std::cout << f << "\n";
+                    }
+                }
+                break;
+            }
 
             case 0:
                 std::cout << "Saving before exit...\n";
