@@ -41,8 +41,10 @@ void MainProject::run()
         std::cout << "7. Connect to Database (simulate)\n";
         std::cout << "8. Save to files\n";
         std::cout << "9. Show Full Report\n";
-        std::cout << "10. Search Student\n";
-        std::cout << "11. Search Faculty\n";
+        std::cout << "10. Search Student by ID\n";
+        std::cout << "11. Search Student by Name\n";
+        std::cout << "12. Search Faculty by ID\n";
+        std::cout << "13. Search Faculty by Name\n";
         std::cout << "0. Exit\n";
         std::cout << "Choose option: ";
 
@@ -128,6 +130,24 @@ void MainProject::run()
 
             case 10:
             {
+                std::cout <<"Enter student id: ";
+                int id{};
+                std::cin >> id;
+
+                const Student* student = studentModule_.findbyID(id);
+                if(student)
+                {
+                    std::cout << "Found: " << *student << "\n";
+                }
+                else
+                {
+                    std::cout << "student not found\n";
+                }
+                break;
+            }
+
+            case 11:
+            {
                 std::cout << "Search Student by name: ";
                 std::string keyword;
                 std::cin >> keyword;
@@ -148,7 +168,25 @@ void MainProject::run()
                 break;
             }
 
-            case 11:
+            case 12:
+            {
+                std::cout << "Enter faculty id: ";
+                int id{};
+                std::cin >> id;
+
+                const Faculty *faculty = facultyModule_.findFacultyById(id);
+                if(faculty)
+                {
+                    std::cout << "Found: " << *faculty << "\n";
+                }
+                else
+                {
+                    std::cout << "Faculty not found.\n";
+                }
+                break;
+            }
+
+            case 13:
             {
                 std::cout << "Search Faculty by name: ";
                 std::string keyword;
