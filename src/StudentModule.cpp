@@ -78,6 +78,20 @@ std::vector<Student> StudentModule::findStudentbyName(const std::string& name) c
     return results;
 }
 
+bool StudentModule::updateStudentName(int id, const std::string& newName)
+{
+    auto& allStudents = students_.all();
+
+    for (auto& student : allStudents)
+    {
+        if(student.id == id)
+        {
+            student.name = newName;
+            return true;
+        }
+    } 
+    return false;
+}
 
 void StudentModule::saveToFile(const std::string& filename) const
 {

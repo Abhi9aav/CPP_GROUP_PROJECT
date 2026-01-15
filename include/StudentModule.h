@@ -4,6 +4,7 @@
 #include "ListTemplate.h"
 #include <string>
 #include <ostream>
+#include <vector>
 
 
 // Simple Student data type
@@ -24,6 +25,8 @@ class StudentModule : public AbstractModule
 
     const Student* findbyID(int id) const;
     std::vector<Student> findStudentbyName(const std::string& name) const;
+
+    bool updateStudentName(int id, const std::string& newName); 
 
     void saveToFile(const std::string& filename) const;
     void loadFromFile(const std::string& filename);

@@ -35,6 +35,11 @@ class ListTemplate
         return items_;
     }
 
+    std::vector<T>& all()
+    {
+        return items_;
+    }
+
 private:
     std::vector<T> items_;    
 };

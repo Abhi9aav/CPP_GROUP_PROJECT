@@ -45,6 +45,7 @@ void MainProject::run()
         std::cout << "11. Search Student by Name\n";
         std::cout << "12. Search Faculty by ID\n";
         std::cout << "13. Search Faculty by Name\n";
+        std::cout << "14. Update Student Name\n";
         std::cout << "0. Exit\n";
         std::cout << "Choose option: ";
 
@@ -207,6 +208,37 @@ void MainProject::run()
                 }
                 break;
             }
+
+            case 14:
+            {
+                std::cout <<"Enter Student id to update: ";
+                int id{};
+                std::cin >> id;
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+                const Student* student = studentModule_.findbyID(id);
+                if (!student)
+                {
+                    std::cout <<"Student not found.\n";
+                    break;
+                }
+
+                std::cout << "Current details: " << *student << "\n";
+                std::cout << "Enter new name: ";
+
+                std::string newName;
+                std::getline(std::cin, newName);
+
+                if (studentModule_.updateStudentName(id, newName))
+                {
+                    std::cout <<"Student updated successfully.\n";
+                }
+                else
+                {
+                    std::cout << "update failed.\n";
+                }
+                break;
+            }   
 
             case 0:
                 std::cout << "Saving before exit...\n";
