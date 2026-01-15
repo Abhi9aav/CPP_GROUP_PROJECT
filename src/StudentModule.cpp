@@ -80,7 +80,7 @@ std::vector<Student> StudentModule::findStudentbyName(const std::string& name) c
 
 bool StudentModule::updateStudentName(int id, const std::string& newName)
 {
-    auto& allStudents = students_.all();
+    auto& allStudents = students_.allMutable();
 
     for (auto& student : allStudents)
     {

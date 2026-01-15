@@ -35,7 +35,7 @@ class ListTemplate
         return items_;
     }
 
-    std::vector<T>& all()
+    std::vector<T>& allMutable()
     {
         return items_;
     }
