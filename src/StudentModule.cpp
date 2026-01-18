@@ -3,6 +3,24 @@
 #include <iostream>
 #include <fstream>
 #include <limits>
+#include <cctype>
+
+static bool isValidName(const std::string& name)
+{
+    if (name.empty()) 
+    {
+        return false;
+    }
+
+    for (char c : name)
+    {
+        if (!std::isspace(static_cast<unsigned char>(c)))
+        {
+            return true;
+        }
+    }
+    return false;
+}
 
 void StudentModule::addStudent()
 {
@@ -17,13 +35,24 @@ void StudentModule::addStudent()
         return;
     }
 
+     if (id <= 0)
+    {
+        std::cout << "ID must be positive.\n";
+        return;
+    }
+
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     std::cout << "Enter student name: ";
     std::string name;
     std::getline(std::cin, name);
 
-    // avoid duplicates
+    if (!isValidName(name))
+    {
+        std::cout << "Invalid name.\n";
+        return;
+    }
+    
     for (const auto& student : students_.all())
     {
         if (student.id == id)
@@ -80,6 +109,12 @@ std::vector<Student> StudentModule::findStudentbyName(const std::string& name) c
 
 bool StudentModule::updateStudentName(int id, const std::string& newName)
 {
+    if (!isValidName(newName))
+    {
+        std::cout << "Invalid name.\n";
+        return false;
+    }
+
     auto& allStudents = students_.allMutable();
 
     for (auto& student : allStudents)
@@ -90,6 +125,8 @@ bool StudentModule::updateStudentName(int id, const std::string& newName)
             return true;
         }
     } 
+
+    std::cout << "Student ID not found.\n";
     return false;
 }
 

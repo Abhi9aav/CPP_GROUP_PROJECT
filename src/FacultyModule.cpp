@@ -4,6 +4,24 @@
 #include <iostream>
 #include <fstream>
 #include <limits>
+#include <cctype>
+
+static bool isValidName(const std::string& name)
+{
+    if (name.empty()) 
+    {
+        return false;
+    }
+
+    for (char c : name)
+    {
+        if (!std::isspace(static_cast<unsigned char>(c)))
+        {
+             return true;
+        }
+    }
+    return false;
+}
 
 void FacultyModule::addFaculty() 
 {
@@ -18,14 +36,24 @@ void FacultyModule::addFaculty()
         return;
     }
 
-    
+    if (id <= 0)
+    {
+        std::cout << "ID must be positive.\n";
+        return;
+    }
+
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     std::cout << "Enter faculty name: ";
     std::string name;
     std::getline(std::cin, name);
 
-    // avoid duplicates
+    if (!isValidName(name))
+    {
+        std::cout << "Invalid name.\n";
+        return;
+    }
+    
     for (const auto& faculty : faculty_.all()) 
     {
         if (faculty.id == id) 
