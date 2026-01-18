@@ -40,6 +40,12 @@ class ListTemplate
         return items_;
     }
 
+    void clear() 
+    {
+        items_.clear();
+    }
+
+
 private:
     std::vector<T> items_;    
 };

@@ -110,6 +110,12 @@ std::vector<Faculty> FacultyModule::findFacultyByName(const std::string& keyword
 
 bool FacultyModule::updateFacultyName(int id, const std::string& newName)
 {
+    if (!isValidName(newName)) 
+    {
+        std::cout << "Invalid name.\n";
+        return false;
+    }
+
     for(auto& faculty : faculty_.allMutable())
     {
         if(faculty.id == id)
@@ -145,24 +151,51 @@ void FacultyModule::loadFromFile(const std::string& filename)
     {
         return;
     }
+
+    faculty_.clear();
     
     std::string line;
     while (std::getline(inFile, line)) 
     {
-        if (line.empty()) 
+        if (line.empty())
         {
             continue;
         }
 
         const auto commaPos = line.find(',');
-
-        if (commaPos == std::string::npos) 
+        if (commaPos == std::string::npos)
         {
             continue;
         }
-        const int id = std::stoi(line.substr(0, commaPos));
-        const std::string name = line.substr(commaPos + 1);
-        faculty_.add(Faculty{id, name});
+
+        int id{};
+        try
+        {
+            id = std::stoi(line.substr(0,commaPos));
+        }
+
+        catch(...)
+        {
+            continue;
+        }
+
+        std::string name = line.substr(commaPos + 1);
+
+        bool exists = false;
+
+        for (const auto& faculty : faculty_.all())
+        {
+            if (faculty.id == id)
+            {
+                exists = true;
+                break;
+            }
+        }
+
+         if (!exists)
+        {
+            faculty_.add(Faculty{id, name});
+        }
     }
 }
 

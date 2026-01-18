@@ -155,6 +155,8 @@ void StudentModule::loadFromFile(const std::string& filename)
         return;
     }
 
+    students_.clear();
+
     std::string line;
     while (std::getline(inFile, line))
     {
@@ -169,8 +171,34 @@ void StudentModule::loadFromFile(const std::string& filename)
             continue;
         }
 
-        const int id = std::stoi(line.substr(0, commaPos));
-        const std::string name = line.substr(commaPos + 1);
+        int id{};
+        try
+        {
+            id = std::stoi(line.substr(0,commaPos));
+        }
+
+        catch(...)
+        {
+            continue;
+        }
+
+        std::string name = line.substr(commaPos + 1);
+
+        bool exists = false;
+
+        for (const auto& student : students_.all())
+        {
+            if (student.id == id)
+            {
+                exists = true;
+                break;
+            }
+        }
+
+         if (!exists)
+        {
+            students_.add(Student{id, name});
+        }
 
         students_.add(Student{id, name});
     }
