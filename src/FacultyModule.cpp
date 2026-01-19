@@ -5,6 +5,17 @@
 #include <fstream>
 #include <limits>
 #include <cctype>
+#include <algorithm>
+
+static std::string toLower(std::string s)
+{
+    std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) 
+    { 
+        return std::tolower(c); 
+    });
+
+    return s;
+}
 
 static bool isValidName(const std::string& name)
 {
@@ -94,13 +105,14 @@ const Faculty* FacultyModule::findById(int id) const
     return nullptr;
 }
 
-std::vector<Faculty> FacultyModule::findFacultyByName(const std::string& keyword) const
+std::vector<Faculty> FacultyModule::findFacultyByName(const std::string& name) const
 {
     std::vector<Faculty> results;
+    const std::string name_Lower = toLower(name);
 
     for(const auto& faculty : faculty_.all())
     {
-        if(faculty.name.find(keyword) != std::string::npos)
+        if(toLower(faculty.name).find(name) != std::string::npos)
         {
             results.push_back(faculty);
         }

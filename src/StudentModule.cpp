@@ -4,6 +4,17 @@
 #include <fstream>
 #include <limits>
 #include <cctype>
+#include <algorithm>
+
+static std::string toLower(std::string s)
+{
+    std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) 
+    { 
+        return std::tolower(c); 
+    });
+
+    return s;
+}
 
 static bool isValidName(const std::string& name)
 {
@@ -96,10 +107,11 @@ const Student* StudentModule::findbyID(int id) const
 std::vector<Student> StudentModule::findStudentbyName(const std::string& name) const
 {
     std::vector<Student> results;
+    const std::string name_Lower = toLower(name);
 
     for (const auto& student: students_.all())
     {
-        if (student.name.find(name) != std::string::npos)
+        if (toLower(student.name).find(name) != std::string::npos)
         {
             results.push_back(student);
         }
